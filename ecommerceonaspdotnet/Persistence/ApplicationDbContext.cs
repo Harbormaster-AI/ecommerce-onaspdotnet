@@ -61,862 +61,862 @@ public DbSet<Payout> Payouts => Set<Payout>();
         modelBuilder.Entity<Channel>()
             .HasOne<Merchant>()
             .WithMany(parent => parent.Channels)
-            .HasForeignKey("ChannelsId");
+            .HasForeignKey("Channels_Id");
 
         // Merchant has one or more Brands of type Brand
         modelBuilder.Entity<Brand>()
             .HasOne<Merchant>()
             .WithMany(parent => parent.Brands)
-            .HasForeignKey("BrandsId");
+            .HasForeignKey("Brands_Id");
 
         // Merchant has one or more FulfillmentCenters of type FulfillmentCenter
         modelBuilder.Entity<FulfillmentCenter>()
             .HasOne<Merchant>()
             .WithMany(parent => parent.FulfillmentCenters)
-            .HasForeignKey("FulfillmentCentersId");
+            .HasForeignKey("FulfillmentCenters_Id");
 
         // Merchant has one or more TaxRules of type TaxRule
         modelBuilder.Entity<TaxRule>()
             .HasOne<Merchant>()
             .WithMany(parent => parent.TaxRules)
-            .HasForeignKey("TaxRulesId");
+            .HasForeignKey("TaxRules_Id");
 
         // Merchant has one or more PaymentProviders of type PaymentProvider
         modelBuilder.Entity<PaymentProvider>()
             .HasOne<Merchant>()
             .WithMany(parent => parent.PaymentProviders)
-            .HasForeignKey("PaymentProvidersId");
+            .HasForeignKey("PaymentProviders_Id");
 
         // Merchant has one or more Sellers of type Seller
         modelBuilder.Entity<Seller>()
             .HasOne<Merchant>()
             .WithMany(parent => parent.Sellers)
-            .HasForeignKey("SellersId");
+            .HasForeignKey("Sellers_Id");
 
         // Merchant has one or more Promotions of type Promotion
         modelBuilder.Entity<Promotion>()
             .HasOne<Merchant>()
             .WithMany(parent => parent.Promotions)
-            .HasForeignKey("PromotionsId");
+            .HasForeignKey("Promotions_Id");
 
         // Channel has one Merchant of type Merchant
         modelBuilder.Entity<Channel>()
             .HasOne(x => x.Merchant)
             .WithMany()
-            .HasForeignKey("MerchantId");
+            .HasForeignKey("Merchant_Id");
 
 
         // Channel has one or more Catalogs of type Catalog
         modelBuilder.Entity<Catalog>()
             .HasOne<Channel>()
             .WithMany(parent => parent.Catalogs)
-            .HasForeignKey("CatalogsId");
+            .HasForeignKey("Catalogs_Id");
 
         // Channel has one or more Promotions of type Promotion
         modelBuilder.Entity<Promotion>()
             .HasOne<Channel>()
             .WithMany(parent => parent.Promotions)
-            .HasForeignKey("PromotionsId");
+            .HasForeignKey("Promotions_Id");
 
         // Channel has one or more ShippingMethods of type ShippingMethod
         modelBuilder.Entity<ShippingMethod>()
             .HasOne<Channel>()
             .WithMany(parent => parent.ShippingMethods)
-            .HasForeignKey("ShippingMethodsId");
+            .HasForeignKey("ShippingMethods_Id");
 
         // Channel has one or more PaymentProviders of type PaymentProvider
         modelBuilder.Entity<PaymentProvider>()
             .HasOne<Channel>()
             .WithMany(parent => parent.PaymentProviders)
-            .HasForeignKey("PaymentProvidersId");
+            .HasForeignKey("PaymentProviders_Id");
 
         // Brand has one Merchant of type Merchant
         modelBuilder.Entity<Brand>()
             .HasOne(x => x.Merchant)
             .WithMany()
-            .HasForeignKey("MerchantId");
+            .HasForeignKey("Merchant_Id");
 
 
         // Brand has one or more Products of type Product
         modelBuilder.Entity<Product>()
             .HasOne<Brand>()
             .WithMany(parent => parent.Products)
-            .HasForeignKey("ProductsId");
+            .HasForeignKey("Products_Id");
 
         // Catalog has one Channel of type Channel
         modelBuilder.Entity<Catalog>()
             .HasOne(x => x.Channel)
             .WithMany()
-            .HasForeignKey("ChannelId");
+            .HasForeignKey("Channel_Id");
 
 
         // Catalog has one or more Categories of type Category
         modelBuilder.Entity<Category>()
             .HasOne<Catalog>()
             .WithMany(parent => parent.Categories)
-            .HasForeignKey("CategoriesId");
+            .HasForeignKey("Categories_Id");
 
         // Category has one Catalog of type Catalog
         modelBuilder.Entity<Category>()
             .HasOne(x => x.Catalog)
             .WithMany()
-            .HasForeignKey("CatalogId");
+            .HasForeignKey("Catalog_Id");
 
         // Category has one ParentCategory of type Category
         modelBuilder.Entity<Category>()
             .HasOne(x => x.ParentCategory)
             .WithMany()
-            .HasForeignKey("ParentCategoryId");
+            .HasForeignKey("ParentCategory_Id");
 
 
         // Category has one or more Subcategories of type Category
         modelBuilder.Entity<Category>()
             .HasOne<Category>()
             .WithMany(parent => parent.Subcategories)
-            .HasForeignKey("SubcategoriesId");
+            .HasForeignKey("Subcategories_Id");
 
         // Category has one or more Products of type Product
         modelBuilder.Entity<Product>()
             .HasOne<Category>()
             .WithMany(parent => parent.Products)
-            .HasForeignKey("ProductsId");
+            .HasForeignKey("Products_Id");
 
         // Product has one Brand of type Brand
         modelBuilder.Entity<Product>()
             .HasOne(x => x.Brand)
             .WithMany()
-            .HasForeignKey("BrandId");
+            .HasForeignKey("Brand_Id");
 
         // Product has one Seller of type Seller
         modelBuilder.Entity<Product>()
             .HasOne(x => x.Seller)
             .WithMany()
-            .HasForeignKey("SellerId");
+            .HasForeignKey("Seller_Id");
 
 
         // Product has one or more Categories of type Category
         modelBuilder.Entity<Category>()
             .HasOne<Product>()
             .WithMany(parent => parent.Categories)
-            .HasForeignKey("CategoriesId");
+            .HasForeignKey("Categories_Id");
 
         // Product has one or more Variants of type ProductVariant
         modelBuilder.Entity<ProductVariant>()
             .HasOne<Product>()
             .WithMany(parent => parent.Variants)
-            .HasForeignKey("VariantsId");
+            .HasForeignKey("Variants_Id");
 
         // Product has one or more MediaAssets of type MediaAsset
         modelBuilder.Entity<MediaAsset>()
             .HasOne<Product>()
             .WithMany(parent => parent.MediaAssets)
-            .HasForeignKey("MediaAssetsId");
+            .HasForeignKey("MediaAssets_Id");
 
         // Product has one or more Reviews of type Review
         modelBuilder.Entity<Review>()
             .HasOne<Product>()
             .WithMany(parent => parent.Reviews)
-            .HasForeignKey("ReviewsId");
+            .HasForeignKey("Reviews_Id");
 
         // ProductVariant has one Product of type Product
         modelBuilder.Entity<ProductVariant>()
             .HasOne(x => x.Product)
             .WithMany()
-            .HasForeignKey("ProductId");
+            .HasForeignKey("Product_Id");
 
 
         // ProductVariant has one or more Pricing of type ProductPricing
         modelBuilder.Entity<ProductPricing>()
             .HasOne<ProductVariant>()
             .WithMany(parent => parent.Pricing)
-            .HasForeignKey("PricingId");
+            .HasForeignKey("Pricing_Id");
 
         // ProductVariant has one or more InventoryItems of type InventoryItem
         modelBuilder.Entity<InventoryItem>()
             .HasOne<ProductVariant>()
             .WithMany(parent => parent.InventoryItems)
-            .HasForeignKey("InventoryItemsId");
+            .HasForeignKey("InventoryItems_Id");
 
         // ProductVariant has one or more MediaAssets of type MediaAsset
         modelBuilder.Entity<MediaAsset>()
             .HasOne<ProductVariant>()
             .WithMany(parent => parent.MediaAssets)
-            .HasForeignKey("MediaAssetsId");
+            .HasForeignKey("MediaAssets_Id");
 
         // ProductVariant has one or more Subscriptions of type Subscription
         modelBuilder.Entity<Subscription>()
             .HasOne<ProductVariant>()
             .WithMany(parent => parent.Subscriptions)
-            .HasForeignKey("SubscriptionsId");
+            .HasForeignKey("Subscriptions_Id");
 
         // ProductVariant has one or more CartItems of type CartItem
         modelBuilder.Entity<CartItem>()
             .HasOne<ProductVariant>()
             .WithMany(parent => parent.CartItems)
-            .HasForeignKey("CartItemsId");
+            .HasForeignKey("CartItems_Id");
 
         // ProductVariant has one or more OrderLines of type OrderLine
         modelBuilder.Entity<OrderLine>()
             .HasOne<ProductVariant>()
             .WithMany(parent => parent.OrderLines)
-            .HasForeignKey("OrderLinesId");
+            .HasForeignKey("OrderLines_Id");
 
         // ProductVariant has one or more WishlistItems of type WishlistItem
         modelBuilder.Entity<WishlistItem>()
             .HasOne<ProductVariant>()
             .WithMany(parent => parent.WishlistItems)
-            .HasForeignKey("WishlistItemsId");
+            .HasForeignKey("WishlistItems_Id");
 
         // ProductPricing has one Variant of type ProductVariant
         modelBuilder.Entity<ProductPricing>()
             .HasOne(x => x.Variant)
             .WithMany()
-            .HasForeignKey("VariantId");
+            .HasForeignKey("Variant_Id");
 
         // ProductPricing has one Channel of type Channel
         modelBuilder.Entity<ProductPricing>()
             .HasOne(x => x.Channel)
             .WithMany()
-            .HasForeignKey("ChannelId");
+            .HasForeignKey("Channel_Id");
 
 
         // MediaAsset has one Product of type Product
         modelBuilder.Entity<MediaAsset>()
             .HasOne(x => x.Product)
             .WithMany()
-            .HasForeignKey("ProductId");
+            .HasForeignKey("Product_Id");
 
         // MediaAsset has one Variant of type ProductVariant
         modelBuilder.Entity<MediaAsset>()
             .HasOne(x => x.Variant)
             .WithMany()
-            .HasForeignKey("VariantId");
+            .HasForeignKey("Variant_Id");
 
 
         // FulfillmentCenter has one Merchant of type Merchant
         modelBuilder.Entity<FulfillmentCenter>()
             .HasOne(x => x.Merchant)
             .WithMany()
-            .HasForeignKey("MerchantId");
+            .HasForeignKey("Merchant_Id");
 
 
         // FulfillmentCenter has one or more InventoryItems of type InventoryItem
         modelBuilder.Entity<InventoryItem>()
             .HasOne<FulfillmentCenter>()
             .WithMany(parent => parent.InventoryItems)
-            .HasForeignKey("InventoryItemsId");
+            .HasForeignKey("InventoryItems_Id");
 
         // FulfillmentCenter has one or more Shipments of type Shipment
         modelBuilder.Entity<Shipment>()
             .HasOne<FulfillmentCenter>()
             .WithMany(parent => parent.Shipments)
-            .HasForeignKey("ShipmentsId");
+            .HasForeignKey("Shipments_Id");
 
         // InventoryItem has one Variant of type ProductVariant
         modelBuilder.Entity<InventoryItem>()
             .HasOne(x => x.Variant)
             .WithMany()
-            .HasForeignKey("VariantId");
+            .HasForeignKey("Variant_Id");
 
         // InventoryItem has one FulfillmentCenter of type FulfillmentCenter
         modelBuilder.Entity<InventoryItem>()
             .HasOne(x => x.FulfillmentCenter)
             .WithMany()
-            .HasForeignKey("FulfillmentCenterId");
+            .HasForeignKey("FulfillmentCenter_Id");
 
 
         // Supplier has one Merchant of type Merchant
         modelBuilder.Entity<Supplier>()
             .HasOne(x => x.Merchant)
             .WithMany()
-            .HasForeignKey("MerchantId");
+            .HasForeignKey("Merchant_Id");
 
 
         // Supplier has one or more Products of type Product
         modelBuilder.Entity<Product>()
             .HasOne<Supplier>()
             .WithMany(parent => parent.Products)
-            .HasForeignKey("ProductsId");
+            .HasForeignKey("Products_Id");
 
         // Supplier has one or more FulfillmentCenters of type FulfillmentCenter
         modelBuilder.Entity<FulfillmentCenter>()
             .HasOne<Supplier>()
             .WithMany(parent => parent.FulfillmentCenters)
-            .HasForeignKey("FulfillmentCentersId");
+            .HasForeignKey("FulfillmentCenters_Id");
 
         // Seller has one Merchant of type Merchant
         modelBuilder.Entity<Seller>()
             .HasOne(x => x.Merchant)
             .WithMany()
-            .HasForeignKey("MerchantId");
+            .HasForeignKey("Merchant_Id");
 
 
         // Seller has one or more Products of type Product
         modelBuilder.Entity<Product>()
             .HasOne<Seller>()
             .WithMany(parent => parent.Products)
-            .HasForeignKey("ProductsId");
+            .HasForeignKey("Products_Id");
 
         // Seller has one or more Payouts of type Payout
         modelBuilder.Entity<Payout>()
             .HasOne<Seller>()
             .WithMany(parent => parent.Payouts)
-            .HasForeignKey("PayoutsId");
+            .HasForeignKey("Payouts_Id");
 
         // Seller has one or more Orders of type Order
         modelBuilder.Entity<Order>()
             .HasOne<Seller>()
             .WithMany(parent => parent.Orders)
-            .HasForeignKey("OrdersId");
+            .HasForeignKey("Orders_Id");
 
 
         // Customer has one or more Addresses of type CustomerAddress
         modelBuilder.Entity<CustomerAddress>()
             .HasOne<Customer>()
             .WithMany(parent => parent.Addresses)
-            .HasForeignKey("AddressesId");
+            .HasForeignKey("Addresses_Id");
 
         // Customer has one or more Carts of type Cart
         modelBuilder.Entity<Cart>()
             .HasOne<Customer>()
             .WithMany(parent => parent.Carts)
-            .HasForeignKey("CartsId");
+            .HasForeignKey("Carts_Id");
 
         // Customer has one or more Orders of type Order
         modelBuilder.Entity<Order>()
             .HasOne<Customer>()
             .WithMany(parent => parent.Orders)
-            .HasForeignKey("OrdersId");
+            .HasForeignKey("Orders_Id");
 
         // Customer has one or more Payments of type Payment
         modelBuilder.Entity<Payment>()
             .HasOne<Customer>()
             .WithMany(parent => parent.Payments)
-            .HasForeignKey("PaymentsId");
+            .HasForeignKey("Payments_Id");
 
         // Customer has one or more Reviews of type Review
         modelBuilder.Entity<Review>()
             .HasOne<Customer>()
             .WithMany(parent => parent.Reviews)
-            .HasForeignKey("ReviewsId");
+            .HasForeignKey("Reviews_Id");
 
         // Customer has one or more Wishlists of type Wishlist
         modelBuilder.Entity<Wishlist>()
             .HasOne<Customer>()
             .WithMany(parent => parent.Wishlists)
-            .HasForeignKey("WishlistsId");
+            .HasForeignKey("Wishlists_Id");
 
         // Customer has one or more Subscriptions of type Subscription
         modelBuilder.Entity<Subscription>()
             .HasOne<Customer>()
             .WithMany(parent => parent.Subscriptions)
-            .HasForeignKey("SubscriptionsId");
+            .HasForeignKey("Subscriptions_Id");
 
         // Customer has one or more CouponRedemptions of type CouponRedemption
         modelBuilder.Entity<CouponRedemption>()
             .HasOne<Customer>()
             .WithMany(parent => parent.CouponRedemptions)
-            .HasForeignKey("CouponRedemptionsId");
+            .HasForeignKey("CouponRedemptions_Id");
 
         // Customer has one or more GiftCards of type GiftCard
         modelBuilder.Entity<GiftCard>()
             .HasOne<Customer>()
             .WithMany(parent => parent.GiftCards)
-            .HasForeignKey("GiftCardsId");
+            .HasForeignKey("GiftCards_Id");
 
         // CustomerAddress has one Customer of type Customer
         modelBuilder.Entity<CustomerAddress>()
             .HasOne(x => x.Customer)
             .WithMany()
-            .HasForeignKey("CustomerId");
+            .HasForeignKey("Customer_Id");
 
 
         // Wishlist has one Customer of type Customer
         modelBuilder.Entity<Wishlist>()
             .HasOne(x => x.Customer)
             .WithMany()
-            .HasForeignKey("CustomerId");
+            .HasForeignKey("Customer_Id");
 
 
         // Wishlist has one or more Items of type WishlistItem
         modelBuilder.Entity<WishlistItem>()
             .HasOne<Wishlist>()
             .WithMany(parent => parent.Items)
-            .HasForeignKey("ItemsId");
+            .HasForeignKey("Items_Id");
 
         // WishlistItem has one Wishlist of type Wishlist
         modelBuilder.Entity<WishlistItem>()
             .HasOne(x => x.Wishlist)
             .WithMany()
-            .HasForeignKey("WishlistId");
+            .HasForeignKey("Wishlist_Id");
 
         // WishlistItem has one Variant of type ProductVariant
         modelBuilder.Entity<WishlistItem>()
             .HasOne(x => x.Variant)
             .WithMany()
-            .HasForeignKey("VariantId");
+            .HasForeignKey("Variant_Id");
 
 
         // Cart has one Customer of type Customer
         modelBuilder.Entity<Cart>()
             .HasOne(x => x.Customer)
             .WithMany()
-            .HasForeignKey("CustomerId");
+            .HasForeignKey("Customer_Id");
 
         // Cart has one Channel of type Channel
         modelBuilder.Entity<Cart>()
             .HasOne(x => x.Channel)
             .WithMany()
-            .HasForeignKey("ChannelId");
+            .HasForeignKey("Channel_Id");
 
 
         // Cart has one or more Items of type CartItem
         modelBuilder.Entity<CartItem>()
             .HasOne<Cart>()
             .WithMany(parent => parent.Items)
-            .HasForeignKey("ItemsId");
+            .HasForeignKey("Items_Id");
 
         // Cart has one or more AppliedPromotions of type Promotion
         modelBuilder.Entity<Promotion>()
             .HasOne<Cart>()
             .WithMany(parent => parent.AppliedPromotions)
-            .HasForeignKey("AppliedPromotionsId");
+            .HasForeignKey("AppliedPromotions_Id");
 
         // CartItem has one Cart of type Cart
         modelBuilder.Entity<CartItem>()
             .HasOne(x => x.Cart)
             .WithMany()
-            .HasForeignKey("CartId");
+            .HasForeignKey("Cart_Id");
 
         // CartItem has one Variant of type ProductVariant
         modelBuilder.Entity<CartItem>()
             .HasOne(x => x.Variant)
             .WithMany()
-            .HasForeignKey("VariantId");
+            .HasForeignKey("Variant_Id");
 
 
         // CartItem has one or more AppliedPromotions of type Promotion
         modelBuilder.Entity<Promotion>()
             .HasOne<CartItem>()
             .WithMany(parent => parent.AppliedPromotions)
-            .HasForeignKey("AppliedPromotionsId");
+            .HasForeignKey("AppliedPromotions_Id");
 
         // Order has one Customer of type Customer
         modelBuilder.Entity<Order>()
             .HasOne(x => x.Customer)
             .WithMany()
-            .HasForeignKey("CustomerId");
+            .HasForeignKey("Customer_Id");
 
         // Order has one Channel of type Channel
         modelBuilder.Entity<Order>()
             .HasOne(x => x.Channel)
             .WithMany()
-            .HasForeignKey("ChannelId");
+            .HasForeignKey("Channel_Id");
 
         // Order has one Seller of type Seller
         modelBuilder.Entity<Order>()
             .HasOne(x => x.Seller)
             .WithMany()
-            .HasForeignKey("SellerId");
+            .HasForeignKey("Seller_Id");
 
         // Order has one Invoice of type Invoice
         modelBuilder.Entity<Order>()
             .HasOne(x => x.Invoice)
             .WithMany()
-            .HasForeignKey("InvoiceId");
+            .HasForeignKey("Invoice_Id");
 
 
         // Order has one or more OrderLines of type OrderLine
         modelBuilder.Entity<OrderLine>()
             .HasOne<Order>()
             .WithMany(parent => parent.OrderLines)
-            .HasForeignKey("OrderLinesId");
+            .HasForeignKey("OrderLines_Id");
 
         // Order has one or more Payments of type Payment
         modelBuilder.Entity<Payment>()
             .HasOne<Order>()
             .WithMany(parent => parent.Payments)
-            .HasForeignKey("PaymentsId");
+            .HasForeignKey("Payments_Id");
 
         // Order has one or more Shipments of type Shipment
         modelBuilder.Entity<Shipment>()
             .HasOne<Order>()
             .WithMany(parent => parent.Shipments)
-            .HasForeignKey("ShipmentsId");
+            .HasForeignKey("Shipments_Id");
 
         // Order has one or more Refunds of type Refund
         modelBuilder.Entity<Refund>()
             .HasOne<Order>()
             .WithMany(parent => parent.Refunds)
-            .HasForeignKey("RefundsId");
+            .HasForeignKey("Refunds_Id");
 
         // Order has one or more AppliedPromotions of type Promotion
         modelBuilder.Entity<Promotion>()
             .HasOne<Order>()
             .WithMany(parent => parent.AppliedPromotions)
-            .HasForeignKey("AppliedPromotionsId");
+            .HasForeignKey("AppliedPromotions_Id");
 
         // Order has one or more GiftCardRedemptions of type GiftCardRedemption
         modelBuilder.Entity<GiftCardRedemption>()
             .HasOne<Order>()
             .WithMany(parent => parent.GiftCardRedemptions)
-            .HasForeignKey("GiftCardRedemptionsId");
+            .HasForeignKey("GiftCardRedemptions_Id");
 
         // Order has one or more CouponRedemptions of type CouponRedemption
         modelBuilder.Entity<CouponRedemption>()
             .HasOne<Order>()
             .WithMany(parent => parent.CouponRedemptions)
-            .HasForeignKey("CouponRedemptionsId");
+            .HasForeignKey("CouponRedemptions_Id");
 
         // Order has one or more ReturnRequests of type ReturnRequest
         modelBuilder.Entity<ReturnRequest>()
             .HasOne<Order>()
             .WithMany(parent => parent.ReturnRequests)
-            .HasForeignKey("ReturnRequestsId");
+            .HasForeignKey("ReturnRequests_Id");
 
         // OrderLine has one Order of type Order
         modelBuilder.Entity<OrderLine>()
             .HasOne(x => x.Order)
             .WithMany()
-            .HasForeignKey("OrderId");
+            .HasForeignKey("Order_Id");
 
         // OrderLine has one Variant of type ProductVariant
         modelBuilder.Entity<OrderLine>()
             .HasOne(x => x.Variant)
             .WithMany()
-            .HasForeignKey("VariantId");
+            .HasForeignKey("Variant_Id");
 
 
         // OrderLine has one or more AppliedPromotions of type Promotion
         modelBuilder.Entity<Promotion>()
             .HasOne<OrderLine>()
             .WithMany(parent => parent.AppliedPromotions)
-            .HasForeignKey("AppliedPromotionsId");
+            .HasForeignKey("AppliedPromotions_Id");
 
         // Payment has one Order of type Order
         modelBuilder.Entity<Payment>()
             .HasOne(x => x.Order)
             .WithMany()
-            .HasForeignKey("OrderId");
+            .HasForeignKey("Order_Id");
 
         // Payment has one Customer of type Customer
         modelBuilder.Entity<Payment>()
             .HasOne(x => x.Customer)
             .WithMany()
-            .HasForeignKey("CustomerId");
+            .HasForeignKey("Customer_Id");
 
         // Payment has one PaymentProvider of type PaymentProvider
         modelBuilder.Entity<Payment>()
             .HasOne(x => x.PaymentProvider)
             .WithMany()
-            .HasForeignKey("PaymentProviderId");
+            .HasForeignKey("PaymentProvider_Id");
 
 
         // Payment has one or more Refunds of type Refund
         modelBuilder.Entity<Refund>()
             .HasOne<Payment>()
             .WithMany(parent => parent.Refunds)
-            .HasForeignKey("RefundsId");
+            .HasForeignKey("Refunds_Id");
 
         // Refund has one Payment of type Payment
         modelBuilder.Entity<Refund>()
             .HasOne(x => x.Payment)
             .WithMany()
-            .HasForeignKey("PaymentId");
+            .HasForeignKey("Payment_Id");
 
         // Refund has one Order of type Order
         modelBuilder.Entity<Refund>()
             .HasOne(x => x.Order)
             .WithMany()
-            .HasForeignKey("OrderId");
+            .HasForeignKey("Order_Id");
 
 
         // Shipment has one Order of type Order
         modelBuilder.Entity<Shipment>()
             .HasOne(x => x.Order)
             .WithMany()
-            .HasForeignKey("OrderId");
+            .HasForeignKey("Order_Id");
 
         // Shipment has one FulfillmentCenter of type FulfillmentCenter
         modelBuilder.Entity<Shipment>()
             .HasOne(x => x.FulfillmentCenter)
             .WithMany()
-            .HasForeignKey("FulfillmentCenterId");
+            .HasForeignKey("FulfillmentCenter_Id");
 
 
         // Shipment has one or more ShipmentItems of type ShipmentItem
         modelBuilder.Entity<ShipmentItem>()
             .HasOne<Shipment>()
             .WithMany(parent => parent.ShipmentItems)
-            .HasForeignKey("ShipmentItemsId");
+            .HasForeignKey("ShipmentItems_Id");
 
         // ShipmentItem has one Shipment of type Shipment
         modelBuilder.Entity<ShipmentItem>()
             .HasOne(x => x.Shipment)
             .WithMany()
-            .HasForeignKey("ShipmentId");
+            .HasForeignKey("Shipment_Id");
 
         // ShipmentItem has one OrderLine of type OrderLine
         modelBuilder.Entity<ShipmentItem>()
             .HasOne(x => x.OrderLine)
             .WithMany()
-            .HasForeignKey("OrderLineId");
+            .HasForeignKey("OrderLine_Id");
 
 
         // ReturnRequest has one Order of type Order
         modelBuilder.Entity<ReturnRequest>()
             .HasOne(x => x.Order)
             .WithMany()
-            .HasForeignKey("OrderId");
+            .HasForeignKey("Order_Id");
 
         // ReturnRequest has one Refund of type Refund
         modelBuilder.Entity<ReturnRequest>()
             .HasOne(x => x.Refund)
             .WithMany()
-            .HasForeignKey("RefundId");
+            .HasForeignKey("Refund_Id");
 
         // ReturnRequest has one Shipment of type Shipment
         modelBuilder.Entity<ReturnRequest>()
             .HasOne(x => x.Shipment)
             .WithMany()
-            .HasForeignKey("ShipmentId");
+            .HasForeignKey("Shipment_Id");
 
 
         // ReturnRequest has one or more Items of type ReturnItem
         modelBuilder.Entity<ReturnItem>()
             .HasOne<ReturnRequest>()
             .WithMany(parent => parent.Items)
-            .HasForeignKey("ItemsId");
+            .HasForeignKey("Items_Id");
 
         // ReturnItem has one ReturnRequest of type ReturnRequest
         modelBuilder.Entity<ReturnItem>()
             .HasOne(x => x.ReturnRequest)
             .WithMany()
-            .HasForeignKey("ReturnRequestId");
+            .HasForeignKey("ReturnRequest_Id");
 
         // ReturnItem has one OrderLine of type OrderLine
         modelBuilder.Entity<ReturnItem>()
             .HasOne(x => x.OrderLine)
             .WithMany()
-            .HasForeignKey("OrderLineId");
+            .HasForeignKey("OrderLine_Id");
 
 
         // Promotion has one Merchant of type Merchant
         modelBuilder.Entity<Promotion>()
             .HasOne(x => x.Merchant)
             .WithMany()
-            .HasForeignKey("MerchantId");
+            .HasForeignKey("Merchant_Id");
 
 
         // Promotion has one or more Channels of type Channel
         modelBuilder.Entity<Channel>()
             .HasOne<Promotion>()
             .WithMany(parent => parent.Channels)
-            .HasForeignKey("ChannelsId");
+            .HasForeignKey("Channels_Id");
 
         // Promotion has one or more ApplicableProducts of type Product
         modelBuilder.Entity<Product>()
             .HasOne<Promotion>()
             .WithMany(parent => parent.ApplicableProducts)
-            .HasForeignKey("ApplicableProductsId");
+            .HasForeignKey("ApplicableProducts_Id");
 
         // Promotion has one or more ApplicableCategories of type Category
         modelBuilder.Entity<Category>()
             .HasOne<Promotion>()
             .WithMany(parent => parent.ApplicableCategories)
-            .HasForeignKey("ApplicableCategoriesId");
+            .HasForeignKey("ApplicableCategories_Id");
 
         // Promotion has one or more Coupons of type Coupon
         modelBuilder.Entity<Coupon>()
             .HasOne<Promotion>()
             .WithMany(parent => parent.Coupons)
-            .HasForeignKey("CouponsId");
+            .HasForeignKey("Coupons_Id");
 
         // Coupon has one Promotion of type Promotion
         modelBuilder.Entity<Coupon>()
             .HasOne(x => x.Promotion)
             .WithMany()
-            .HasForeignKey("PromotionId");
+            .HasForeignKey("Promotion_Id");
 
 
         // Coupon has one or more Redemptions of type CouponRedemption
         modelBuilder.Entity<CouponRedemption>()
             .HasOne<Coupon>()
             .WithMany(parent => parent.Redemptions)
-            .HasForeignKey("RedemptionsId");
+            .HasForeignKey("Redemptions_Id");
 
         // CouponRedemption has one Coupon of type Coupon
         modelBuilder.Entity<CouponRedemption>()
             .HasOne(x => x.Coupon)
             .WithMany()
-            .HasForeignKey("CouponId");
+            .HasForeignKey("Coupon_Id");
 
         // CouponRedemption has one Order of type Order
         modelBuilder.Entity<CouponRedemption>()
             .HasOne(x => x.Order)
             .WithMany()
-            .HasForeignKey("OrderId");
+            .HasForeignKey("Order_Id");
 
         // CouponRedemption has one Customer of type Customer
         modelBuilder.Entity<CouponRedemption>()
             .HasOne(x => x.Customer)
             .WithMany()
-            .HasForeignKey("CustomerId");
+            .HasForeignKey("Customer_Id");
 
 
         // TaxRule has one Merchant of type Merchant
         modelBuilder.Entity<TaxRule>()
             .HasOne(x => x.Merchant)
             .WithMany()
-            .HasForeignKey("MerchantId");
+            .HasForeignKey("Merchant_Id");
 
 
         // TaxRule has one or more Channels of type Channel
         modelBuilder.Entity<Channel>()
             .HasOne<TaxRule>()
             .WithMany(parent => parent.Channels)
-            .HasForeignKey("ChannelsId");
+            .HasForeignKey("Channels_Id");
 
         // ShippingMethod has one CarrierService of type CarrierService
         modelBuilder.Entity<ShippingMethod>()
             .HasOne(x => x.CarrierService)
             .WithMany()
-            .HasForeignKey("CarrierServiceId");
+            .HasForeignKey("CarrierService_Id");
 
 
         // ShippingMethod has one or more Channels of type Channel
         modelBuilder.Entity<Channel>()
             .HasOne<ShippingMethod>()
             .WithMany(parent => parent.Channels)
-            .HasForeignKey("ChannelsId");
+            .HasForeignKey("Channels_Id");
 
 
         // CarrierService has one or more ShippingMethods of type ShippingMethod
         modelBuilder.Entity<ShippingMethod>()
             .HasOne<CarrierService>()
             .WithMany(parent => parent.ShippingMethods)
-            .HasForeignKey("ShippingMethodsId");
+            .HasForeignKey("ShippingMethods_Id");
 
         // Review has one Product of type Product
         modelBuilder.Entity<Review>()
             .HasOne(x => x.Product)
             .WithMany()
-            .HasForeignKey("ProductId");
+            .HasForeignKey("Product_Id");
 
         // Review has one Customer of type Customer
         modelBuilder.Entity<Review>()
             .HasOne(x => x.Customer)
             .WithMany()
-            .HasForeignKey("CustomerId");
+            .HasForeignKey("Customer_Id");
 
         // Review has one Order of type Order
         modelBuilder.Entity<Review>()
             .HasOne(x => x.Order)
             .WithMany()
-            .HasForeignKey("OrderId");
+            .HasForeignKey("Order_Id");
 
 
         // Subscription has one Customer of type Customer
         modelBuilder.Entity<Subscription>()
             .HasOne(x => x.Customer)
             .WithMany()
-            .HasForeignKey("CustomerId");
+            .HasForeignKey("Customer_Id");
 
         // Subscription has one Variant of type ProductVariant
         modelBuilder.Entity<Subscription>()
             .HasOne(x => x.Variant)
             .WithMany()
-            .HasForeignKey("VariantId");
+            .HasForeignKey("Variant_Id");
 
         // Subscription has one PaymentProvider of type PaymentProvider
         modelBuilder.Entity<Subscription>()
             .HasOne(x => x.PaymentProvider)
             .WithMany()
-            .HasForeignKey("PaymentProviderId");
+            .HasForeignKey("PaymentProvider_Id");
 
         // Subscription has one Channel of type Channel
         modelBuilder.Entity<Subscription>()
             .HasOne(x => x.Channel)
             .WithMany()
-            .HasForeignKey("ChannelId");
+            .HasForeignKey("Channel_Id");
 
 
         // PaymentProvider has one Merchant of type Merchant
         modelBuilder.Entity<PaymentProvider>()
             .HasOne(x => x.Merchant)
             .WithMany()
-            .HasForeignKey("MerchantId");
+            .HasForeignKey("Merchant_Id");
 
 
         // PaymentProvider has one or more Channels of type Channel
         modelBuilder.Entity<Channel>()
             .HasOne<PaymentProvider>()
             .WithMany(parent => parent.Channels)
-            .HasForeignKey("ChannelsId");
+            .HasForeignKey("Channels_Id");
 
         // PaymentProvider has one or more Payments of type Payment
         modelBuilder.Entity<Payment>()
             .HasOne<PaymentProvider>()
             .WithMany(parent => parent.Payments)
-            .HasForeignKey("PaymentsId");
+            .HasForeignKey("Payments_Id");
 
         // PaymentProvider has one or more Subscriptions of type Subscription
         modelBuilder.Entity<Subscription>()
             .HasOne<PaymentProvider>()
             .WithMany(parent => parent.Subscriptions)
-            .HasForeignKey("SubscriptionsId");
+            .HasForeignKey("Subscriptions_Id");
 
         // Invoice has one Order of type Order
         modelBuilder.Entity<Invoice>()
             .HasOne(x => x.Order)
             .WithMany()
-            .HasForeignKey("OrderId");
+            .HasForeignKey("Order_Id");
 
 
         // GiftCard has one Customer of type Customer
         modelBuilder.Entity<GiftCard>()
             .HasOne(x => x.Customer)
             .WithMany()
-            .HasForeignKey("CustomerId");
+            .HasForeignKey("Customer_Id");
 
         // GiftCard has one IssuedOrder of type Order
         modelBuilder.Entity<GiftCard>()
             .HasOne(x => x.IssuedOrder)
             .WithMany()
-            .HasForeignKey("IssuedOrderId");
+            .HasForeignKey("IssuedOrder_Id");
 
 
         // GiftCard has one or more Redemptions of type GiftCardRedemption
         modelBuilder.Entity<GiftCardRedemption>()
             .HasOne<GiftCard>()
             .WithMany(parent => parent.Redemptions)
-            .HasForeignKey("RedemptionsId");
+            .HasForeignKey("Redemptions_Id");
 
         // GiftCardRedemption has one GiftCard of type GiftCard
         modelBuilder.Entity<GiftCardRedemption>()
             .HasOne(x => x.GiftCard)
             .WithMany()
-            .HasForeignKey("GiftCardId");
+            .HasForeignKey("GiftCard_Id");
 
         // GiftCardRedemption has one Order of type Order
         modelBuilder.Entity<GiftCardRedemption>()
             .HasOne(x => x.Order)
             .WithMany()
-            .HasForeignKey("OrderId");
+            .HasForeignKey("Order_Id");
 
 
         // Payout has one Seller of type Seller
         modelBuilder.Entity<Payout>()
             .HasOne(x => x.Seller)
             .WithMany()
-            .HasForeignKey("SellerId");
+            .HasForeignKey("Seller_Id");
 
 
         // Payout has one or more Orders of type Order
         modelBuilder.Entity<Order>()
             .HasOne<Payout>()
             .WithMany(parent => parent.Orders)
-            .HasForeignKey("OrdersId");
+            .HasForeignKey("Orders_Id");
 
     }
 }
