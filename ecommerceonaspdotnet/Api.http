@@ -1,0 +1,5 @@
+@ecommerceonaspdotnet.Api_HostAddress = http://localhost:5076
+
+GET {{ecommerceonaspdotnet.Api_HostAddress}}/
+Accept: application/json
+

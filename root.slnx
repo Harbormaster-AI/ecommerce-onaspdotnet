@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="ecommerceonaspdotnet/ecommerceonaspdotnet.Api.csproj" />
+  <Project Path="ecommerceonaspdotnet/Tests/ecommerceonaspdotnet.Tests.csproj" />
+</Solution>

@@ -1,0 +1,12 @@
+using ecommerceonaspdotnet.Domain;
+
+namespace ecommerceonaspdotnet.Persistence;
+
+public interface ICatalogRepository
+{
+    Task<Catalog?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<IReadOnlyList<Catalog>> GetAllAsync(CancellationToken cancellationToken);
+    Task AddAsync(Catalog catalog, CancellationToken cancellationToken);
+    Task UpdateAsync(Catalog catalog, CancellationToken cancellationToken);
+    Task DeleteAsync(Catalog catalog, CancellationToken cancellationToken);
+}
