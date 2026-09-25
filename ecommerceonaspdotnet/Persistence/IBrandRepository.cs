@@ -1,4 +1,5 @@
 using ecommerceonaspdotnet.Domain;
+using ecommerceonaspdotnet.Contracts;
 
 namespace ecommerceonaspdotnet.Persistence;
 
@@ -9,4 +10,8 @@ public interface IBrandRepository
     Task AddAsync(Brand brand, CancellationToken cancellationToken);
     Task UpdateAsync(Brand brand, CancellationToken cancellationToken);
     Task DeleteAsync(Brand brand, CancellationToken cancellationToken);
+
+    Task AddToProductsAsync( MultipleAssociationRequest request, CancellationToken cancellationToken);
+    Task RemoveFromProductsAsync( MultipleAssociationRequest request, CancellationToken cancellationToken);
+
 }

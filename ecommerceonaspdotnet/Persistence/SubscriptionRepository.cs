@@ -1,4 +1,7 @@
+
+using ecommerceonaspdotnet.Contracts;
 using ecommerceonaspdotnet.Domain;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace ecommerceonaspdotnet.Persistence;
@@ -50,4 +53,5 @@ public class SubscriptionRepository : ISubscriptionRepository
         _db.Subscriptions.Remove(subscription);
         await _db.SaveChangesAsync(cancellationToken);
     }
+
 }

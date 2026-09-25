@@ -1,4 +1,5 @@
 using ecommerceonaspdotnet.Domain;
+using ecommerceonaspdotnet.Contracts;
 
 namespace ecommerceonaspdotnet.Persistence;
 
@@ -9,4 +10,6 @@ public interface IGiftCardRedemptionRepository
     Task AddAsync(GiftCardRedemption giftCardRedemption, CancellationToken cancellationToken);
     Task UpdateAsync(GiftCardRedemption giftCardRedemption, CancellationToken cancellationToken);
     Task DeleteAsync(GiftCardRedemption giftCardRedemption, CancellationToken cancellationToken);
+
+
 }

@@ -1,7 +1,8 @@
 using ecommerceonaspdotnet.Api;
 using ecommerceonaspdotnet.Persistence;
 using ecommerceonaspdotnet.Service;
-
+using ecommerceonaspdotnet.Telemetry;
+using OpenTelemetry.Metrics;
 using Microsoft.EntityFrameworkCore;
 using Oracle.EntityFrameworkCore;
 
@@ -11,7 +12,6 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddOpenApi();
 builder.Services.AddHealthChecks()
     .AddDbContextCheck<ApplicationDbContext>();
-
 
 var dbEngineEnvironment = builder.Configuration["DB_TYPE"];
 
@@ -113,89 +113,106 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     // etc.
 });
 
-builder.Services.AddScoped<IMerchantRepository, MerchantRepository>();
-builder.Services.AddScoped<IChannelRepository, ChannelRepository>();
-builder.Services.AddScoped<IBrandRepository, BrandRepository>();
-builder.Services.AddScoped<ICatalogRepository, CatalogRepository>();
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IProductVariantRepository, ProductVariantRepository>();
-builder.Services.AddScoped<IProductPricingRepository, ProductPricingRepository>();
-builder.Services.AddScoped<IMediaAssetRepository, MediaAssetRepository>();
-builder.Services.AddScoped<IFulfillmentCenterRepository, FulfillmentCenterRepository>();
-builder.Services.AddScoped<IInventoryItemRepository, InventoryItemRepository>();
-builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
-builder.Services.AddScoped<ISellerRepository, SellerRepository>();
-builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
-builder.Services.AddScoped<ICustomerAddressRepository, CustomerAddressRepository>();
-builder.Services.AddScoped<IWishlistRepository, WishlistRepository>();
-builder.Services.AddScoped<IWishlistItemRepository, WishlistItemRepository>();
-builder.Services.AddScoped<ICartRepository, CartRepository>();
-builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-builder.Services.AddScoped<IOrderLineRepository, OrderLineRepository>();
-builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
-builder.Services.AddScoped<IRefundRepository, RefundRepository>();
-builder.Services.AddScoped<IShipmentRepository, ShipmentRepository>();
-builder.Services.AddScoped<IShipmentItemRepository, ShipmentItemRepository>();
-builder.Services.AddScoped<IReturnRequestRepository, ReturnRequestRepository>();
-builder.Services.AddScoped<IReturnItemRepository, ReturnItemRepository>();
-builder.Services.AddScoped<IPromotionRepository, PromotionRepository>();
-builder.Services.AddScoped<ICouponRepository, CouponRepository>();
-builder.Services.AddScoped<ICouponRedemptionRepository, CouponRedemptionRepository>();
-builder.Services.AddScoped<ITaxRuleRepository, TaxRuleRepository>();
-builder.Services.AddScoped<IShippingMethodRepository, ShippingMethodRepository>();
-builder.Services.AddScoped<ICarrierServiceRepository, CarrierServiceRepository>();
-builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
-builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
-builder.Services.AddScoped<IPaymentProviderRepository, PaymentProviderRepository>();
-builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
-builder.Services.AddScoped<IGiftCardRepository, GiftCardRepository>();
-builder.Services.AddScoped<IGiftCardRedemptionRepository, GiftCardRedemptionRepository>();
-builder.Services.AddScoped<IPayoutRepository, PayoutRepository>();
+    builder.Services.AddScoped<IMerchantRepository, MerchantRepository>();
+    builder.Services.AddScoped<IChannelRepository, ChannelRepository>();
+    builder.Services.AddScoped<IBrandRepository, BrandRepository>();
+    builder.Services.AddScoped<ICatalogRepository, CatalogRepository>();
+    builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+    builder.Services.AddScoped<IProductRepository, ProductRepository>();
+    builder.Services.AddScoped<IProductVariantRepository, ProductVariantRepository>();
+    builder.Services.AddScoped<IProductPricingRepository, ProductPricingRepository>();
+    builder.Services.AddScoped<IMediaAssetRepository, MediaAssetRepository>();
+    builder.Services.AddScoped<IFulfillmentCenterRepository, FulfillmentCenterRepository>();
+    builder.Services.AddScoped<IInventoryItemRepository, InventoryItemRepository>();
+    builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
+    builder.Services.AddScoped<ISellerRepository, SellerRepository>();
+    builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+    builder.Services.AddScoped<ICustomerAddressRepository, CustomerAddressRepository>();
+    builder.Services.AddScoped<IWishlistRepository, WishlistRepository>();
+    builder.Services.AddScoped<IWishlistItemRepository, WishlistItemRepository>();
+    builder.Services.AddScoped<ICartRepository, CartRepository>();
+    builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
+    builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+    builder.Services.AddScoped<IOrderLineRepository, OrderLineRepository>();
+    builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+    builder.Services.AddScoped<IRefundRepository, RefundRepository>();
+    builder.Services.AddScoped<IShipmentRepository, ShipmentRepository>();
+    builder.Services.AddScoped<IShipmentItemRepository, ShipmentItemRepository>();
+    builder.Services.AddScoped<IReturnRequestRepository, ReturnRequestRepository>();
+    builder.Services.AddScoped<IReturnItemRepository, ReturnItemRepository>();
+    builder.Services.AddScoped<IPromotionRepository, PromotionRepository>();
+    builder.Services.AddScoped<ICouponRepository, CouponRepository>();
+    builder.Services.AddScoped<ICouponRedemptionRepository, CouponRedemptionRepository>();
+    builder.Services.AddScoped<ITaxRuleRepository, TaxRuleRepository>();
+    builder.Services.AddScoped<IShippingMethodRepository, ShippingMethodRepository>();
+    builder.Services.AddScoped<ICarrierServiceRepository, CarrierServiceRepository>();
+    builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+    builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
+    builder.Services.AddScoped<IPaymentProviderRepository, PaymentProviderRepository>();
+    builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+    builder.Services.AddScoped<IGiftCardRepository, GiftCardRepository>();
+    builder.Services.AddScoped<IGiftCardRedemptionRepository, GiftCardRedemptionRepository>();
+    builder.Services.AddScoped<IPayoutRepository, PayoutRepository>();
 
-builder.Services.AddScoped<IMerchantService, MerchantService>();
-builder.Services.AddScoped<IChannelService, ChannelService>();
-builder.Services.AddScoped<IBrandService, BrandService>();
-builder.Services.AddScoped<ICatalogService, CatalogService>();
-builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<IProductVariantService, ProductVariantService>();
-builder.Services.AddScoped<IProductPricingService, ProductPricingService>();
-builder.Services.AddScoped<IMediaAssetService, MediaAssetService>();
-builder.Services.AddScoped<IFulfillmentCenterService, FulfillmentCenterService>();
-builder.Services.AddScoped<IInventoryItemService, InventoryItemService>();
-builder.Services.AddScoped<ISupplierService, SupplierService>();
-builder.Services.AddScoped<ISellerService, SellerService>();
-builder.Services.AddScoped<ICustomerService, CustomerService>();
-builder.Services.AddScoped<ICustomerAddressService, CustomerAddressService>();
-builder.Services.AddScoped<IWishlistService, WishlistService>();
-builder.Services.AddScoped<IWishlistItemService, WishlistItemService>();
-builder.Services.AddScoped<ICartService, CartService>();
-builder.Services.AddScoped<ICartItemService, CartItemService>();
-builder.Services.AddScoped<IOrderService, OrderService>();
-builder.Services.AddScoped<IOrderLineService, OrderLineService>();
-builder.Services.AddScoped<IPaymentService, PaymentService>();
-builder.Services.AddScoped<IRefundService, RefundService>();
-builder.Services.AddScoped<IShipmentService, ShipmentService>();
-builder.Services.AddScoped<IShipmentItemService, ShipmentItemService>();
-builder.Services.AddScoped<IReturnRequestService, ReturnRequestService>();
-builder.Services.AddScoped<IReturnItemService, ReturnItemService>();
-builder.Services.AddScoped<IPromotionService, PromotionService>();
-builder.Services.AddScoped<ICouponService, CouponService>();
-builder.Services.AddScoped<ICouponRedemptionService, CouponRedemptionService>();
-builder.Services.AddScoped<ITaxRuleService, TaxRuleService>();
-builder.Services.AddScoped<IShippingMethodService, ShippingMethodService>();
-builder.Services.AddScoped<ICarrierServiceService, CarrierServiceService>();
-builder.Services.AddScoped<IReviewService, ReviewService>();
-builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
-builder.Services.AddScoped<IPaymentProviderService, PaymentProviderService>();
-builder.Services.AddScoped<IInvoiceService, InvoiceService>();
-builder.Services.AddScoped<IGiftCardService, GiftCardService>();
-builder.Services.AddScoped<IGiftCardRedemptionService, GiftCardRedemptionService>();
-builder.Services.AddScoped<IPayoutService, PayoutService>();
+    builder.Services.AddScoped<IMerchantService, MerchantService>();
+    builder.Services.AddScoped<IChannelService, ChannelService>();
+    builder.Services.AddScoped<IBrandService, BrandService>();
+    builder.Services.AddScoped<ICatalogService, CatalogService>();
+    builder.Services.AddScoped<ICategoryService, CategoryService>();
+    builder.Services.AddScoped<IProductService, ProductService>();
+    builder.Services.AddScoped<IProductVariantService, ProductVariantService>();
+    builder.Services.AddScoped<IProductPricingService, ProductPricingService>();
+    builder.Services.AddScoped<IMediaAssetService, MediaAssetService>();
+    builder.Services.AddScoped<IFulfillmentCenterService, FulfillmentCenterService>();
+    builder.Services.AddScoped<IInventoryItemService, InventoryItemService>();
+    builder.Services.AddScoped<ISupplierService, SupplierService>();
+    builder.Services.AddScoped<ISellerService, SellerService>();
+    builder.Services.AddScoped<ICustomerService, CustomerService>();
+    builder.Services.AddScoped<ICustomerAddressService, CustomerAddressService>();
+    builder.Services.AddScoped<IWishlistService, WishlistService>();
+    builder.Services.AddScoped<IWishlistItemService, WishlistItemService>();
+    builder.Services.AddScoped<ICartService, CartService>();
+    builder.Services.AddScoped<ICartItemService, CartItemService>();
+    builder.Services.AddScoped<IOrderService, OrderService>();
+    builder.Services.AddScoped<IOrderLineService, OrderLineService>();
+    builder.Services.AddScoped<IPaymentService, PaymentService>();
+    builder.Services.AddScoped<IRefundService, RefundService>();
+    builder.Services.AddScoped<IShipmentService, ShipmentService>();
+    builder.Services.AddScoped<IShipmentItemService, ShipmentItemService>();
+    builder.Services.AddScoped<IReturnRequestService, ReturnRequestService>();
+    builder.Services.AddScoped<IReturnItemService, ReturnItemService>();
+    builder.Services.AddScoped<IPromotionService, PromotionService>();
+    builder.Services.AddScoped<ICouponService, CouponService>();
+    builder.Services.AddScoped<ICouponRedemptionService, CouponRedemptionService>();
+    builder.Services.AddScoped<ITaxRuleService, TaxRuleService>();
+    builder.Services.AddScoped<IShippingMethodService, ShippingMethodService>();
+    builder.Services.AddScoped<ICarrierServiceService, CarrierServiceService>();
+    builder.Services.AddScoped<IReviewService, ReviewService>();
+    builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
+    builder.Services.AddScoped<IPaymentProviderService, PaymentProviderService>();
+    builder.Services.AddScoped<IInvoiceService, InvoiceService>();
+    builder.Services.AddScoped<IGiftCardService, GiftCardService>();
+    builder.Services.AddScoped<IGiftCardRedemptionService, GiftCardRedemptionService>();
+    builder.Services.AddScoped<IPayoutService, PayoutService>();
+
+// apply the service resolver
+builder.Services.AddScoped<IServiceResolver, ServiceResolver>();
+
+builder.Services.AddSingleton<ApplicationTelemetry>();
+
+builder.Services
+    .AddOpenTelemetry()
+    .WithMetrics(metrics =>
+    {
+        metrics.AddMeter("Harbormaster.Application");
+
+        metrics.AddPrometheusExporter();
+    });
 
 var app = builder.Build();
+
+app.MapPrometheusScrapingEndpoint();
+
 
 // Health endpoint
 app.MapHealthChecks("/health");
@@ -224,46 +241,46 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 
-app.MapMerchantEndpoints();
-app.MapChannelEndpoints();
-app.MapBrandEndpoints();
-app.MapCatalogEndpoints();
-app.MapCategoryEndpoints();
-app.MapProductEndpoints();
-app.MapProductVariantEndpoints();
-app.MapProductPricingEndpoints();
-app.MapMediaAssetEndpoints();
-app.MapFulfillmentCenterEndpoints();
-app.MapInventoryItemEndpoints();
-app.MapSupplierEndpoints();
-app.MapSellerEndpoints();
-app.MapCustomerEndpoints();
-app.MapCustomerAddressEndpoints();
-app.MapWishlistEndpoints();
-app.MapWishlistItemEndpoints();
-app.MapCartEndpoints();
-app.MapCartItemEndpoints();
-app.MapOrderEndpoints();
-app.MapOrderLineEndpoints();
-app.MapPaymentEndpoints();
-app.MapRefundEndpoints();
-app.MapShipmentEndpoints();
-app.MapShipmentItemEndpoints();
-app.MapReturnRequestEndpoints();
-app.MapReturnItemEndpoints();
-app.MapPromotionEndpoints();
-app.MapCouponEndpoints();
-app.MapCouponRedemptionEndpoints();
-app.MapTaxRuleEndpoints();
-app.MapShippingMethodEndpoints();
-app.MapCarrierServiceEndpoints();
-app.MapReviewEndpoints();
-app.MapSubscriptionEndpoints();
-app.MapPaymentProviderEndpoints();
-app.MapInvoiceEndpoints();
-app.MapGiftCardEndpoints();
-app.MapGiftCardRedemptionEndpoints();
-app.MapPayoutEndpoints();
+    app.MapMerchantEndpoints();
+    app.MapChannelEndpoints();
+    app.MapBrandEndpoints();
+    app.MapCatalogEndpoints();
+    app.MapCategoryEndpoints();
+    app.MapProductEndpoints();
+    app.MapProductVariantEndpoints();
+    app.MapProductPricingEndpoints();
+    app.MapMediaAssetEndpoints();
+    app.MapFulfillmentCenterEndpoints();
+    app.MapInventoryItemEndpoints();
+    app.MapSupplierEndpoints();
+    app.MapSellerEndpoints();
+    app.MapCustomerEndpoints();
+    app.MapCustomerAddressEndpoints();
+    app.MapWishlistEndpoints();
+    app.MapWishlistItemEndpoints();
+    app.MapCartEndpoints();
+    app.MapCartItemEndpoints();
+    app.MapOrderEndpoints();
+    app.MapOrderLineEndpoints();
+    app.MapPaymentEndpoints();
+    app.MapRefundEndpoints();
+    app.MapShipmentEndpoints();
+    app.MapShipmentItemEndpoints();
+    app.MapReturnRequestEndpoints();
+    app.MapReturnItemEndpoints();
+    app.MapPromotionEndpoints();
+    app.MapCouponEndpoints();
+    app.MapCouponRedemptionEndpoints();
+    app.MapTaxRuleEndpoints();
+    app.MapShippingMethodEndpoints();
+    app.MapCarrierServiceEndpoints();
+    app.MapReviewEndpoints();
+    app.MapSubscriptionEndpoints();
+    app.MapPaymentProviderEndpoints();
+    app.MapInvoiceEndpoints();
+    app.MapGiftCardEndpoints();
+    app.MapGiftCardRedemptionEndpoints();
+    app.MapPayoutEndpoints();
 
 app.Run();
 

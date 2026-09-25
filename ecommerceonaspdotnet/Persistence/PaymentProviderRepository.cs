@@ -1,4 +1,7 @@
+
+using ecommerceonaspdotnet.Contracts;
 using ecommerceonaspdotnet.Domain;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace ecommerceonaspdotnet.Persistence;
@@ -44,4 +47,113 @@ public class PaymentProviderRepository : IPaymentProviderRepository
         _db.PaymentProviders.Remove(paymentProvider);
         await _db.SaveChangesAsync(cancellationToken);
     }
+
+
+    public async Task AddToChannelsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.Channels
+            .Where(channel =>
+                request.ChildIds.Contains(channel.Id))
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    channel =>
+                        EF.Property<Guid?>(
+                            channel,
+                            "Payout_Id"),
+                    request.ParentId));
+    }
+
+    public async Task RemoveFromChannelsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.Channels
+            .Where(channel =>
+                request.ChildIds.Contains(channel.Id) &&
+                EF.Property<Guid?>(
+                    channel,
+                    "Payout_Id") == request.ParentId)
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    channel =>
+                        EF.Property<Guid?>(
+                            channel,
+                            "Payout_Id"),
+                    (Guid?)null));
+    }
+
+
+    public async Task AddToPaymentsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.Payments
+            .Where(payment =>
+                request.ChildIds.Contains(payment.Id))
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    payment =>
+                        EF.Property<Guid?>(
+                            payment,
+                            "Payout_Id"),
+                    request.ParentId));
+    }
+
+    public async Task RemoveFromPaymentsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.Payments
+            .Where(payment =>
+                request.ChildIds.Contains(payment.Id) &&
+                EF.Property<Guid?>(
+                    payment,
+                    "Payout_Id") == request.ParentId)
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    payment =>
+                        EF.Property<Guid?>(
+                            payment,
+                            "Payout_Id"),
+                    (Guid?)null));
+    }
+
+
+    public async Task AddToSubscriptionsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.Subscriptions
+            .Where(subscription =>
+                request.ChildIds.Contains(subscription.Id))
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    subscription =>
+                        EF.Property<Guid?>(
+                            subscription,
+                            "Payout_Id"),
+                    request.ParentId));
+    }
+
+    public async Task RemoveFromSubscriptionsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.Subscriptions
+            .Where(subscription =>
+                request.ChildIds.Contains(subscription.Id) &&
+                EF.Property<Guid?>(
+                    subscription,
+                    "Payout_Id") == request.ParentId)
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    subscription =>
+                        EF.Property<Guid?>(
+                            subscription,
+                            "Payout_Id"),
+                    (Guid?)null));
+    }
+
 }

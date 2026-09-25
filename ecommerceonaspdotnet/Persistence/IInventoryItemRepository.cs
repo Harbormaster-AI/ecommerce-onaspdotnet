@@ -1,4 +1,5 @@
 using ecommerceonaspdotnet.Domain;
+using ecommerceonaspdotnet.Contracts;
 
 namespace ecommerceonaspdotnet.Persistence;
 
@@ -9,4 +10,6 @@ public interface IInventoryItemRepository
     Task AddAsync(InventoryItem inventoryItem, CancellationToken cancellationToken);
     Task UpdateAsync(InventoryItem inventoryItem, CancellationToken cancellationToken);
     Task DeleteAsync(InventoryItem inventoryItem, CancellationToken cancellationToken);
+
+
 }

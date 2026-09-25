@@ -1,4 +1,5 @@
 using ecommerceonaspdotnet.Domain;
+using ecommerceonaspdotnet.Contracts;
 
 namespace ecommerceonaspdotnet.Persistence;
 
@@ -9,4 +10,8 @@ public interface IOrderLineRepository
     Task AddAsync(OrderLine orderLine, CancellationToken cancellationToken);
     Task UpdateAsync(OrderLine orderLine, CancellationToken cancellationToken);
     Task DeleteAsync(OrderLine orderLine, CancellationToken cancellationToken);
+
+    Task AddToAppliedPromotionsAsync( MultipleAssociationRequest request, CancellationToken cancellationToken);
+    Task RemoveFromAppliedPromotionsAsync( MultipleAssociationRequest request, CancellationToken cancellationToken);
+
 }

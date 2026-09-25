@@ -1,4 +1,5 @@
 using ecommerceonaspdotnet.Domain;
+using ecommerceonaspdotnet.Contracts;
 
 namespace ecommerceonaspdotnet.Persistence;
 
@@ -9,4 +10,6 @@ public interface IInvoiceRepository
     Task AddAsync(Invoice invoice, CancellationToken cancellationToken);
     Task UpdateAsync(Invoice invoice, CancellationToken cancellationToken);
     Task DeleteAsync(Invoice invoice, CancellationToken cancellationToken);
+
+
 }

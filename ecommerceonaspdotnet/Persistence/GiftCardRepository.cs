@@ -1,4 +1,7 @@
+
+using ecommerceonaspdotnet.Contracts;
 using ecommerceonaspdotnet.Domain;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace ecommerceonaspdotnet.Persistence;
@@ -46,4 +49,41 @@ public class GiftCardRepository : IGiftCardRepository
         _db.GiftCards.Remove(giftCard);
         await _db.SaveChangesAsync(cancellationToken);
     }
+
+
+    public async Task AddToRedemptionsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.GiftCardRedemptions
+            .Where(giftCardRedemption =>
+                request.ChildIds.Contains(giftCardRedemption.Id))
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    giftCardRedemption =>
+                        EF.Property<Guid?>(
+                            giftCardRedemption,
+                            "Payout_Id"),
+                    request.ParentId));
+    }
+
+    public async Task RemoveFromRedemptionsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.GiftCardRedemptions
+            .Where(giftCardRedemption =>
+                request.ChildIds.Contains(giftCardRedemption.Id) &&
+                EF.Property<Guid?>(
+                    giftCardRedemption,
+                    "Payout_Id") == request.ParentId)
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    giftCardRedemption =>
+                        EF.Property<Guid?>(
+                            giftCardRedemption,
+                            "Payout_Id"),
+                    (Guid?)null));
+    }
+
 }

@@ -1,4 +1,7 @@
+
+using ecommerceonaspdotnet.Contracts;
 using ecommerceonaspdotnet.Domain;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace ecommerceonaspdotnet.Persistence;
@@ -46,4 +49,5 @@ public class MediaAssetRepository : IMediaAssetRepository
         _db.MediaAssets.Remove(mediaAsset);
         await _db.SaveChangesAsync(cancellationToken);
     }
+
 }

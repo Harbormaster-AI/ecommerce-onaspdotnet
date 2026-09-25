@@ -1,4 +1,7 @@
+
+using ecommerceonaspdotnet.Contracts;
 using ecommerceonaspdotnet.Domain;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace ecommerceonaspdotnet.Persistence;
@@ -46,4 +49,77 @@ public class CategoryRepository : ICategoryRepository
         _db.Categorys.Remove(category);
         await _db.SaveChangesAsync(cancellationToken);
     }
+
+
+    public async Task AddToSubcategoriesAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.Categorys
+            .Where(category =>
+                request.ChildIds.Contains(category.Id))
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    category =>
+                        EF.Property<Guid?>(
+                            category,
+                            "Payout_Id"),
+                    request.ParentId));
+    }
+
+    public async Task RemoveFromSubcategoriesAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.Categorys
+            .Where(category =>
+                request.ChildIds.Contains(category.Id) &&
+                EF.Property<Guid?>(
+                    category,
+                    "Payout_Id") == request.ParentId)
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    category =>
+                        EF.Property<Guid?>(
+                            category,
+                            "Payout_Id"),
+                    (Guid?)null));
+    }
+
+
+    public async Task AddToProductsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.Products
+            .Where(product =>
+                request.ChildIds.Contains(product.Id))
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    product =>
+                        EF.Property<Guid?>(
+                            product,
+                            "Payout_Id"),
+                    request.ParentId));
+    }
+
+    public async Task RemoveFromProductsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.Products
+            .Where(product =>
+                request.ChildIds.Contains(product.Id) &&
+                EF.Property<Guid?>(
+                    product,
+                    "Payout_Id") == request.ParentId)
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    product =>
+                        EF.Property<Guid?>(
+                            product,
+                            "Payout_Id"),
+                    (Guid?)null));
+    }
+
 }

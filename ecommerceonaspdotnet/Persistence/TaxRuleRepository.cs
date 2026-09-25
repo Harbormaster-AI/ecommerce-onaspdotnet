@@ -1,4 +1,7 @@
+
+using ecommerceonaspdotnet.Contracts;
 using ecommerceonaspdotnet.Domain;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace ecommerceonaspdotnet.Persistence;
@@ -44,4 +47,41 @@ public class TaxRuleRepository : ITaxRuleRepository
         _db.TaxRules.Remove(taxRule);
         await _db.SaveChangesAsync(cancellationToken);
     }
+
+
+    public async Task AddToChannelsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.Channels
+            .Where(channel =>
+                request.ChildIds.Contains(channel.Id))
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    channel =>
+                        EF.Property<Guid?>(
+                            channel,
+                            "Payout_Id"),
+                    request.ParentId));
+    }
+
+    public async Task RemoveFromChannelsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.Channels
+            .Where(channel =>
+                request.ChildIds.Contains(channel.Id) &&
+                EF.Property<Guid?>(
+                    channel,
+                    "Payout_Id") == request.ParentId)
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    channel =>
+                        EF.Property<Guid?>(
+                            channel,
+                            "Payout_Id"),
+                    (Guid?)null));
+    }
+
 }

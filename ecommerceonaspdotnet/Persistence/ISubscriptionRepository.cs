@@ -1,4 +1,5 @@
 using ecommerceonaspdotnet.Domain;
+using ecommerceonaspdotnet.Contracts;
 
 namespace ecommerceonaspdotnet.Persistence;
 
@@ -9,4 +10,6 @@ public interface ISubscriptionRepository
     Task AddAsync(Subscription subscription, CancellationToken cancellationToken);
     Task UpdateAsync(Subscription subscription, CancellationToken cancellationToken);
     Task DeleteAsync(Subscription subscription, CancellationToken cancellationToken);
+
+
 }

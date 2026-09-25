@@ -1,4 +1,7 @@
+
+using ecommerceonaspdotnet.Contracts;
 using ecommerceonaspdotnet.Domain;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace ecommerceonaspdotnet.Persistence;
@@ -44,4 +47,5 @@ public class InvoiceRepository : IInvoiceRepository
         _db.Invoices.Remove(invoice);
         await _db.SaveChangesAsync(cancellationToken);
     }
+
 }

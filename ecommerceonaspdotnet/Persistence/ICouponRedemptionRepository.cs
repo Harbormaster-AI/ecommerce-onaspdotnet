@@ -1,4 +1,5 @@
 using ecommerceonaspdotnet.Domain;
+using ecommerceonaspdotnet.Contracts;
 
 namespace ecommerceonaspdotnet.Persistence;
 
@@ -9,4 +10,6 @@ public interface ICouponRedemptionRepository
     Task AddAsync(CouponRedemption couponRedemption, CancellationToken cancellationToken);
     Task UpdateAsync(CouponRedemption couponRedemption, CancellationToken cancellationToken);
     Task DeleteAsync(CouponRedemption couponRedemption, CancellationToken cancellationToken);
+
+
 }

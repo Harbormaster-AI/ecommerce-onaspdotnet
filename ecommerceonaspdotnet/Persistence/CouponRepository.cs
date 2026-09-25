@@ -1,4 +1,7 @@
+
+using ecommerceonaspdotnet.Contracts;
 using ecommerceonaspdotnet.Domain;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace ecommerceonaspdotnet.Persistence;
@@ -44,4 +47,41 @@ public class CouponRepository : ICouponRepository
         _db.Coupons.Remove(coupon);
         await _db.SaveChangesAsync(cancellationToken);
     }
+
+
+    public async Task AddToRedemptionsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.CouponRedemptions
+            .Where(couponRedemption =>
+                request.ChildIds.Contains(couponRedemption.Id))
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    couponRedemption =>
+                        EF.Property<Guid?>(
+                            couponRedemption,
+                            "Payout_Id"),
+                    request.ParentId));
+    }
+
+    public async Task RemoveFromRedemptionsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.CouponRedemptions
+            .Where(couponRedemption =>
+                request.ChildIds.Contains(couponRedemption.Id) &&
+                EF.Property<Guid?>(
+                    couponRedemption,
+                    "Payout_Id") == request.ParentId)
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    couponRedemption =>
+                        EF.Property<Guid?>(
+                            couponRedemption,
+                            "Payout_Id"),
+                    (Guid?)null));
+    }
+
 }

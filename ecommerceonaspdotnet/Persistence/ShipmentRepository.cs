@@ -1,4 +1,7 @@
+
+using ecommerceonaspdotnet.Contracts;
 using ecommerceonaspdotnet.Domain;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace ecommerceonaspdotnet.Persistence;
@@ -46,4 +49,41 @@ public class ShipmentRepository : IShipmentRepository
         _db.Shipments.Remove(shipment);
         await _db.SaveChangesAsync(cancellationToken);
     }
+
+
+    public async Task AddToShipmentItemsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.ShipmentItems
+            .Where(shipmentItem =>
+                request.ChildIds.Contains(shipmentItem.Id))
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    shipmentItem =>
+                        EF.Property<Guid?>(
+                            shipmentItem,
+                            "Payout_Id"),
+                    request.ParentId));
+    }
+
+    public async Task RemoveFromShipmentItemsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.ShipmentItems
+            .Where(shipmentItem =>
+                request.ChildIds.Contains(shipmentItem.Id) &&
+                EF.Property<Guid?>(
+                    shipmentItem,
+                    "Payout_Id") == request.ParentId)
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    shipmentItem =>
+                        EF.Property<Guid?>(
+                            shipmentItem,
+                            "Payout_Id"),
+                    (Guid?)null));
+    }
+
 }

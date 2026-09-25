@@ -1,4 +1,7 @@
+
+using ecommerceonaspdotnet.Contracts;
 using ecommerceonaspdotnet.Domain;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace ecommerceonaspdotnet.Persistence;
@@ -44,4 +47,77 @@ public class FulfillmentCenterRepository : IFulfillmentCenterRepository
         _db.FulfillmentCenters.Remove(fulfillmentCenter);
         await _db.SaveChangesAsync(cancellationToken);
     }
+
+
+    public async Task AddToInventoryItemsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.InventoryItems
+            .Where(inventoryItem =>
+                request.ChildIds.Contains(inventoryItem.Id))
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    inventoryItem =>
+                        EF.Property<Guid?>(
+                            inventoryItem,
+                            "Payout_Id"),
+                    request.ParentId));
+    }
+
+    public async Task RemoveFromInventoryItemsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.InventoryItems
+            .Where(inventoryItem =>
+                request.ChildIds.Contains(inventoryItem.Id) &&
+                EF.Property<Guid?>(
+                    inventoryItem,
+                    "Payout_Id") == request.ParentId)
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    inventoryItem =>
+                        EF.Property<Guid?>(
+                            inventoryItem,
+                            "Payout_Id"),
+                    (Guid?)null));
+    }
+
+
+    public async Task AddToShipmentsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.Shipments
+            .Where(shipment =>
+                request.ChildIds.Contains(shipment.Id))
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    shipment =>
+                        EF.Property<Guid?>(
+                            shipment,
+                            "Payout_Id"),
+                    request.ParentId));
+    }
+
+    public async Task RemoveFromShipmentsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.Shipments
+            .Where(shipment =>
+                request.ChildIds.Contains(shipment.Id) &&
+                EF.Property<Guid?>(
+                    shipment,
+                    "Payout_Id") == request.ParentId)
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    shipment =>
+                        EF.Property<Guid?>(
+                            shipment,
+                            "Payout_Id"),
+                    (Guid?)null));
+    }
+
 }

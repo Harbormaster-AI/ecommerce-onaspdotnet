@@ -1,4 +1,7 @@
+
+using ecommerceonaspdotnet.Contracts;
 using ecommerceonaspdotnet.Domain;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace ecommerceonaspdotnet.Persistence;
@@ -46,4 +49,41 @@ public class OrderLineRepository : IOrderLineRepository
         _db.OrderLines.Remove(orderLine);
         await _db.SaveChangesAsync(cancellationToken);
     }
+
+
+    public async Task AddToAppliedPromotionsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.Promotions
+            .Where(promotion =>
+                request.ChildIds.Contains(promotion.Id))
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    promotion =>
+                        EF.Property<Guid?>(
+                            promotion,
+                            "Payout_Id"),
+                    request.ParentId));
+    }
+
+    public async Task RemoveFromAppliedPromotionsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.Promotions
+            .Where(promotion =>
+                request.ChildIds.Contains(promotion.Id) &&
+                EF.Property<Guid?>(
+                    promotion,
+                    "Payout_Id") == request.ParentId)
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    promotion =>
+                        EF.Property<Guid?>(
+                            promotion,
+                            "Payout_Id"),
+                    (Guid?)null));
+    }
+
 }

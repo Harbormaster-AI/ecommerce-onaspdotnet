@@ -1,4 +1,7 @@
+
+using ecommerceonaspdotnet.Contracts;
 using ecommerceonaspdotnet.Domain;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace ecommerceonaspdotnet.Persistence;
@@ -44,4 +47,41 @@ public class BrandRepository : IBrandRepository
         _db.Brands.Remove(brand);
         await _db.SaveChangesAsync(cancellationToken);
     }
+
+
+    public async Task AddToProductsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.Products
+            .Where(product =>
+                request.ChildIds.Contains(product.Id))
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    product =>
+                        EF.Property<Guid?>(
+                            product,
+                            "Payout_Id"),
+                    request.ParentId));
+    }
+
+    public async Task RemoveFromProductsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.Products
+            .Where(product =>
+                request.ChildIds.Contains(product.Id) &&
+                EF.Property<Guid?>(
+                    product,
+                    "Payout_Id") == request.ParentId)
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    product =>
+                        EF.Property<Guid?>(
+                            product,
+                            "Payout_Id"),
+                    (Guid?)null));
+    }
+
 }

@@ -1,4 +1,7 @@
+
+using ecommerceonaspdotnet.Contracts;
 using ecommerceonaspdotnet.Domain;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace ecommerceonaspdotnet.Persistence;
@@ -42,4 +45,41 @@ public class CarrierServiceRepository : ICarrierServiceRepository
         _db.CarrierServices.Remove(carrierService);
         await _db.SaveChangesAsync(cancellationToken);
     }
+
+
+    public async Task AddToShippingMethodsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.ShippingMethods
+            .Where(shippingMethod =>
+                request.ChildIds.Contains(shippingMethod.Id))
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    shippingMethod =>
+                        EF.Property<Guid?>(
+                            shippingMethod,
+                            "Payout_Id"),
+                    request.ParentId));
+    }
+
+    public async Task RemoveFromShippingMethodsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.ShippingMethods
+            .Where(shippingMethod =>
+                request.ChildIds.Contains(shippingMethod.Id) &&
+                EF.Property<Guid?>(
+                    shippingMethod,
+                    "Payout_Id") == request.ParentId)
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    shippingMethod =>
+                        EF.Property<Guid?>(
+                            shippingMethod,
+                            "Payout_Id"),
+                    (Guid?)null));
+    }
+
 }

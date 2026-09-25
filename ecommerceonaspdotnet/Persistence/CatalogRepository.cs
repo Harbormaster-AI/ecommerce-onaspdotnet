@@ -1,4 +1,7 @@
+
+using ecommerceonaspdotnet.Contracts;
 using ecommerceonaspdotnet.Domain;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace ecommerceonaspdotnet.Persistence;
@@ -44,4 +47,41 @@ public class CatalogRepository : ICatalogRepository
         _db.Catalogs.Remove(catalog);
         await _db.SaveChangesAsync(cancellationToken);
     }
+
+
+    public async Task AddToCategoriesAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.Categorys
+            .Where(category =>
+                request.ChildIds.Contains(category.Id))
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    category =>
+                        EF.Property<Guid?>(
+                            category,
+                            "Payout_Id"),
+                    request.ParentId));
+    }
+
+    public async Task RemoveFromCategoriesAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.Categorys
+            .Where(category =>
+                request.ChildIds.Contains(category.Id) &&
+                EF.Property<Guid?>(
+                    category,
+                    "Payout_Id") == request.ParentId)
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    category =>
+                        EF.Property<Guid?>(
+                            category,
+                            "Payout_Id"),
+                    (Guid?)null));
+    }
+
 }

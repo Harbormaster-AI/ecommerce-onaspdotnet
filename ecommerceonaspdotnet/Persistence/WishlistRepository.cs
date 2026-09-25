@@ -1,4 +1,7 @@
+
+using ecommerceonaspdotnet.Contracts;
 using ecommerceonaspdotnet.Domain;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace ecommerceonaspdotnet.Persistence;
@@ -44,4 +47,41 @@ public class WishlistRepository : IWishlistRepository
         _db.Wishlists.Remove(wishlist);
         await _db.SaveChangesAsync(cancellationToken);
     }
+
+
+    public async Task AddToItemsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.WishlistItems
+            .Where(wishlistItem =>
+                request.ChildIds.Contains(wishlistItem.Id))
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    wishlistItem =>
+                        EF.Property<Guid?>(
+                            wishlistItem,
+                            "Payout_Id"),
+                    request.ParentId));
+    }
+
+    public async Task RemoveFromItemsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.WishlistItems
+            .Where(wishlistItem =>
+                request.ChildIds.Contains(wishlistItem.Id) &&
+                EF.Property<Guid?>(
+                    wishlistItem,
+                    "Payout_Id") == request.ParentId)
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    wishlistItem =>
+                        EF.Property<Guid?>(
+                            wishlistItem,
+                            "Payout_Id"),
+                    (Guid?)null));
+    }
+
 }

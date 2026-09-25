@@ -1,4 +1,7 @@
+
+using ecommerceonaspdotnet.Contracts;
 using ecommerceonaspdotnet.Domain;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace ecommerceonaspdotnet.Persistence;
@@ -48,4 +51,41 @@ public class ReturnRequestRepository : IReturnRequestRepository
         _db.ReturnRequests.Remove(returnRequest);
         await _db.SaveChangesAsync(cancellationToken);
     }
+
+
+    public async Task AddToItemsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.ReturnItems
+            .Where(returnItem =>
+                request.ChildIds.Contains(returnItem.Id))
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    returnItem =>
+                        EF.Property<Guid?>(
+                            returnItem,
+                            "Payout_Id"),
+                    request.ParentId));
+    }
+
+    public async Task RemoveFromItemsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.ReturnItems
+            .Where(returnItem =>
+                request.ChildIds.Contains(returnItem.Id) &&
+                EF.Property<Guid?>(
+                    returnItem,
+                    "Payout_Id") == request.ParentId)
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    returnItem =>
+                        EF.Property<Guid?>(
+                            returnItem,
+                            "Payout_Id"),
+                    (Guid?)null));
+    }
+
 }

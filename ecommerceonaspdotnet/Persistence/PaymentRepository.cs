@@ -1,4 +1,7 @@
+
+using ecommerceonaspdotnet.Contracts;
 using ecommerceonaspdotnet.Domain;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace ecommerceonaspdotnet.Persistence;
@@ -48,4 +51,41 @@ public class PaymentRepository : IPaymentRepository
         _db.Payments.Remove(payment);
         await _db.SaveChangesAsync(cancellationToken);
     }
+
+
+    public async Task AddToRefundsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.Refunds
+            .Where(refund =>
+                request.ChildIds.Contains(refund.Id))
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    refund =>
+                        EF.Property<Guid?>(
+                            refund,
+                            "Payout_Id"),
+                    request.ParentId));
+    }
+
+    public async Task RemoveFromRefundsAsync(
+        MultipleAssociationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _db.Refunds
+            .Where(refund =>
+                request.ChildIds.Contains(refund.Id) &&
+                EF.Property<Guid?>(
+                    refund,
+                    "Payout_Id") == request.ParentId)
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(
+                    refund =>
+                        EF.Property<Guid?>(
+                            refund,
+                            "Payout_Id"),
+                    (Guid?)null));
+    }
+
 }

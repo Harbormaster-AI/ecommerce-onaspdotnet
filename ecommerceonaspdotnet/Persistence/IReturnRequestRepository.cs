@@ -1,4 +1,5 @@
 using ecommerceonaspdotnet.Domain;
+using ecommerceonaspdotnet.Contracts;
 
 namespace ecommerceonaspdotnet.Persistence;
 
@@ -9,4 +10,8 @@ public interface IReturnRequestRepository
     Task AddAsync(ReturnRequest returnRequest, CancellationToken cancellationToken);
     Task UpdateAsync(ReturnRequest returnRequest, CancellationToken cancellationToken);
     Task DeleteAsync(ReturnRequest returnRequest, CancellationToken cancellationToken);
+
+    Task AddToItemsAsync( MultipleAssociationRequest request, CancellationToken cancellationToken);
+    Task RemoveFromItemsAsync( MultipleAssociationRequest request, CancellationToken cancellationToken);
+
 }
